@@ -1,8 +1,14 @@
+'use client'
+
+import { useState } from 'react'
 import { Button } from '@/components/ui/button'
-import { FileText, Plus } from 'lucide-react'
+import { Plus } from 'lucide-react'
 import Link from 'next/link'
+import { InvoiceTable } from '@/components/invoices/invoice-table'
 
 export default function InvoicesPage() {
+  const [searchQuery, setSearchQuery] = useState('')
+
   return (
     <div className="p-6">
       <div className="flex items-center justify-between mb-8">
@@ -20,18 +26,10 @@ export default function InvoicesPage() {
         </Button>
       </div>
 
-      <div className="rounded-lg border bg-card p-12 text-center">
-        <FileText className="mx-auto h-12 w-12 text-muted-foreground mb-4" />
-        <h3 className="text-lg font-medium mb-2">No invoices yet</h3>
-        <p className="text-muted-foreground mb-4">
-          Get started by creating your first invoice
-        </p>
-        <Button asChild>
-          <Link href="/dashboard/invoices/new">
-            Create your first invoice
-          </Link>
-        </Button>
-      </div>
+      <InvoiceTable 
+        searchQuery={searchQuery}
+        onSearchChange={setSearchQuery}
+      />
     </div>
   )
 }
