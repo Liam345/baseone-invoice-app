@@ -1,8 +1,14 @@
+'use client'
+
+import { useState } from 'react'
 import { Button } from '@/components/ui/button'
-import { Users, Plus } from 'lucide-react'
+import { Plus } from 'lucide-react'
 import Link from 'next/link'
+import { CustomerTable } from '@/components/customers/customer-table'
 
 export default function CustomersPage() {
+  const [searchQuery, setSearchQuery] = useState('')
+
   return (
     <div className="p-6">
       <div className="flex items-center justify-between mb-8">
@@ -20,18 +26,10 @@ export default function CustomersPage() {
         </Button>
       </div>
 
-      <div className="rounded-lg border bg-card p-12 text-center">
-        <Users className="mx-auto h-12 w-12 text-muted-foreground mb-4" />
-        <h3 className="text-lg font-medium mb-2">No customers yet</h3>
-        <p className="text-muted-foreground mb-4">
-          Add customers to start creating invoices
-        </p>
-        <Button asChild>
-          <Link href="/dashboard/customers/new">
-            Add your first customer
-          </Link>
-        </Button>
-      </div>
+      <CustomerTable 
+        searchQuery={searchQuery}
+        onSearchChange={setSearchQuery}
+      />
     </div>
   )
 }
