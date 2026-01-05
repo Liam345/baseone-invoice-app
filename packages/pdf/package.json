@@ -1,5 +1,5 @@
 {
-  "name": "@invoice/api",
+  "name": "@invoice/pdf",
   "version": "0.1.0",
   "private": true,
   "main": "./src/index.ts",
@@ -11,15 +11,12 @@
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
-    "@invoice/db": "workspace:*",
-    "@invoice/invoice": "workspace:*",
-    "@invoice/pdf": "workspace:*",
-    "@trpc/server": "^11.0.0",
-    "@supabase/supabase-js": "^2.45.4",
-    "zod": "^3.23.8",
-    "superjson": "^2.2.1"
+    "@react-pdf/renderer": "^4.0.0",
+    "react": "^19.0.0",
+    "qrcode": "^1.5.4"
   },
   "devDependencies": {
+    "@types/qrcode": "^1.5.5",
     "typescript": "^5.9.3"
   }
 }

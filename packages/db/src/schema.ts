@@ -78,6 +78,12 @@ export const teams = pgTable("teams", {
   countryCode: text("country_code"),
   fiscalYearStartMonth: smallint("fiscal_year_start_month").default(1),
   plan: plansEnum().default("trial").notNull(),
+  // Branding settings
+  primaryColor: text("primary_color").default("#1f2937"),
+  secondaryColor: text("secondary_color").default("#6b7280"),
+  accentColor: text("accent_color").default("#3b82f6"),
+  fontFamily: text("font_family").default("Inter"),
+  invoiceFooter: text("invoice_footer"),
 });
 
 export const users = pgTable("users", {
