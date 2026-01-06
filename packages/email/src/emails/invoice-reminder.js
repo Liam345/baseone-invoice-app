@@ -1,0 +1,21 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.InvoiceReminderEmail = void 0;
+var jsx_runtime_1 = require("react/jsx-runtime");
+var components_1 = require("@react-email/components");
+var logo_1 = require("../components/logo");
+var theme_1 = require("../components/theme");
+var InvoiceReminderEmail = function (_a) {
+    var _b = _a.customerName, customerName = _b === void 0 ? "Customer" : _b, _c = _a.teamName, teamName = _c === void 0 ? "BaseOne" : _c, _d = _a.invoiceNumber, invoiceNumber = _d === void 0 ? "INV-0001" : _d, _e = _a.dueDate, dueDate = _e === void 0 ? "2024-01-30" : _e, _f = _a.amount, amount = _f === void 0 ? "1,000.00" : _f, _g = _a.currency, currency = _g === void 0 ? "USD" : _g, _h = _a.link, link = _h === void 0 ? "https://app.baseone.local/i/1234567890" : _h, logoUrl = _a.logoUrl, companyName = _a.companyName;
+    var text = "Payment Reminder: Invoice ".concat(invoiceNumber, " - Due ").concat(dueDate);
+    var themeClasses = (0, theme_1.getEmailThemeClasses)();
+    var lightStyles = (0, theme_1.getEmailInlineStyles)("light");
+    return ((0, jsx_runtime_1.jsx)(theme_1.EmailThemeProvider, { preview: (0, jsx_runtime_1.jsx)(components_1.Preview, { children: text }), children: (0, jsx_runtime_1.jsx)(components_1.Body, { className: "my-auto mx-auto font-sans ".concat(themeClasses.body), style: lightStyles.body, children: (0, jsx_runtime_1.jsxs)(components_1.Container, { className: "my-[40px] mx-auto p-[20px] max-w-[600px] ".concat(themeClasses.container), style: {
+                    borderStyle: "solid",
+                    borderWidth: 1,
+                    borderRadius: 8,
+                    borderColor: lightStyles.container.borderColor,
+                }, children: [(0, jsx_runtime_1.jsx)(logo_1.Logo, { logoUrl: logoUrl, companyName: companyName || teamName }), (0, jsx_runtime_1.jsxs)(components_1.Heading, { className: "text-[21px] font-normal text-center p-0 my-[30px] mx-0 ".concat(themeClasses.heading), style: { color: lightStyles.text.color }, children: ["Payment Reminder ", (0, jsx_runtime_1.jsx)("br", {}), "Invoice ", invoiceNumber] }), (0, jsx_runtime_1.jsx)("br", {}), (0, jsx_runtime_1.jsxs)("span", { className: "font-medium ".concat(themeClasses.text), style: { color: lightStyles.text.color }, children: ["Hi ", customerName, ","] }), (0, jsx_runtime_1.jsxs)(components_1.Text, { className: themeClasses.text, style: { color: lightStyles.text.color }, children: ["This is a friendly reminder that payment for invoice ", invoiceNumber, "is due on ", dueDate, "."] }), (0, jsx_runtime_1.jsxs)(components_1.Section, { className: "my-[20px] p-[16px] bg-gray-50 rounded-lg", children: [(0, jsx_runtime_1.jsx)(components_1.Text, { className: "m-0 font-medium", style: { color: lightStyles.text.color }, children: "Invoice Details:" }), (0, jsx_runtime_1.jsxs)(components_1.Text, { className: "mt-[8px] mb-0", style: { color: lightStyles.text.color }, children: ["\u2022 Invoice Number: ", invoiceNumber, (0, jsx_runtime_1.jsx)("br", {}), "\u2022 Amount Due: ", currency, " ", amount, (0, jsx_runtime_1.jsx)("br", {}), "\u2022 Due Date: ", dueDate] })] }), (0, jsx_runtime_1.jsx)(components_1.Text, { className: themeClasses.text, style: { color: lightStyles.text.color }, children: "We kindly ask you to process this payment at your earliest convenience. If you have already made the payment, please disregard this reminder." }), (0, jsx_runtime_1.jsx)(components_1.Text, { className: themeClasses.text, style: { color: lightStyles.text.color }, children: "If you have any questions or need assistance, please don't hesitate to reply to this email." }), (0, jsx_runtime_1.jsx)(components_1.Section, { className: "text-center mt-[50px] mb-[50px]", children: (0, jsx_runtime_1.jsx)(theme_1.Button, { href: link, children: "View & Pay Invoice" }) }), (0, jsx_runtime_1.jsxs)(components_1.Text, { className: "text-[12px] ".concat(themeClasses.mutedText), style: { color: lightStyles.mutedText.color }, children: ["Thank you for your business. This is an automated reminder from ", teamName, "."] }), (0, jsx_runtime_1.jsx)("br", {})] }) }) }));
+};
+exports.InvoiceReminderEmail = InvoiceReminderEmail;
+exports.default = exports.InvoiceReminderEmail;

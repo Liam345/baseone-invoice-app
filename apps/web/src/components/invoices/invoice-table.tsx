@@ -46,6 +46,7 @@ import {
 } from 'lucide-react'
 import { trpc } from '@/lib/trpc/client'
 import type { InvoiceFiltersInput } from '@invoice/api'
+import { InvoicePDFDownload } from './invoice-pdf-download'
 
 interface InvoiceTableProps {
   searchQuery: string
@@ -351,10 +352,12 @@ export function InvoiceTable({ searchQuery, onSearchChange }: InvoiceTableProps)
                           <Copy className="mr-2 h-4 w-4" />
                           Copy Link
                         </DropdownMenuItem>
-                        <DropdownMenuItem>
-                          <Download className="mr-2 h-4 w-4" />
-                          Download PDF
-                        </DropdownMenuItem>
+                        <div className="px-2 py-1">
+                          <InvoicePDFDownload 
+                            invoiceId={invoice.id}
+                            invoiceNumber={invoice.invoice_number}
+                          />
+                        </div>
                         <DropdownMenuSeparator />
                         <DropdownMenuItem
                           onClick={() => handleDelete(invoice.id)}

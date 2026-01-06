@@ -78,6 +78,12 @@ export const teams = pgTable("teams", {
   countryCode: text("country_code"),
   fiscalYearStartMonth: smallint("fiscal_year_start_month").default(1),
   plan: plansEnum().default("trial").notNull(),
+  // Branding settings
+  primaryColor: text("primary_color").default("#1f2937"),
+  secondaryColor: text("secondary_color").default("#6b7280"),
+  accentColor: text("accent_color").default("#3b82f6"),
+  fontFamily: text("font_family").default("Inter"),
+  invoiceFooter: text("invoice_footer"),
 });
 
 export const users = pgTable("users", {
@@ -374,6 +380,61 @@ export const exchangeRates = pgTable(
   ],
 );
 
+// Email tracking
+export const emailStatusEnum = pgEnum("email_status", [
+  "queued",
+  "sent", 
+  "delivered",
+  "bounced",
+  "complained",
+  "failed",
+]);
+
+export const emailTypeEnum = pgEnum("email_type", [
+  "invoice",
+  "reminder", 
+  "overdue",
+  "paid_confirmation",
+  "other",
+]);
+
+export const emailLogs = pgTable(
+  "email_logs",
+  {
+    id: uuid().defaultRandom().primaryKey().notNull(),
+    createdAt: timestamp("created_at", { withTimezone: true, mode: "string" })
+      .defaultNow()
+      .notNull(),
+    updatedAt: timestamp("updated_at", { withTimezone: true, mode: "string" })
+      .defaultNow()
+      .notNull(),
+    emailId: text("email_id"), // Resend email ID
+    invoiceId: uuid("invoice_id"),
+    teamId: uuid("team_id").notNull(),
+    recipientEmail: text("recipient_email").notNull(),
+    recipientName: text("recipient_name"),
+    subject: text().notNull(),
+    emailType: emailTypeEnum("email_type").default("invoice").notNull(),
+    status: emailStatusEnum().default("queued").notNull(),
+    errorMessage: text("error_message"),
+    sentAt: timestamp("sent_at", { withTimezone: true, mode: "string" }),
+    deliveredAt: timestamp("delivered_at", { withTimezone: true, mode: "string" }),
+    bouncedAt: timestamp("bounced_at", { withTimezone: true, mode: "string" }),
+    complainedAt: timestamp("complained_at", { withTimezone: true, mode: "string" }),
+    openedAt: timestamp("opened_at", { withTimezone: true, mode: "string" }),
+    clickedAt: timestamp("clicked_at", { withTimezone: true, mode: "string" }),
+    metadata: jsonb("metadata"), // Additional tracking data
+  },
+  (table) => [
+    index("email_logs_invoice_id_idx").on(table.invoiceId),
+    index("email_logs_team_id_idx").on(table.teamId),
+    index("email_logs_recipient_email_idx").on(table.recipientEmail),
+    index("email_logs_email_type_idx").on(table.emailType),
+    index("email_logs_status_idx").on(table.status),
+    index("email_logs_created_at_idx").on(table.createdAt),
+  ],
+);
+
 // Relations
 export const teamsRelations = relations(teams, ({ many }) => ({
   users: many(usersOnTeam),
@@ -382,6 +443,7 @@ export const teamsRelations = relations(teams, ({ many }) => ({
   invoiceTemplates: many(invoiceTemplates),
   invoiceProducts: many(invoiceProducts),
   tags: many(tags),
+  emailLogs: many(emailLogs),
 }));
 
 export const usersRelations = relations(users, ({ many }) => ({
@@ -409,7 +471,7 @@ export const customersRelations = relations(customers, ({ one, many }) => ({
   tags: many(customerTags),
 }));
 
-export const invoicesRelations = relations(invoices, ({ one }) => ({
+export const invoicesRelations = relations(invoices, ({ one, many }) => ({
   team: one(teams, {
     fields: [invoices.teamId],
     references: [teams.id],
@@ -422,6 +484,7 @@ export const invoicesRelations = relations(invoices, ({ one }) => ({
     fields: [invoices.userId],
     references: [users.id],
   }),
+  emailLogs: many(emailLogs),
 }));
 
 export const invoiceTemplatesRelations = relations(invoiceTemplates, ({ one }) => ({
@@ -454,5 +517,16 @@ export const customerTagsRelations = relations(customerTags, ({ one }) => ({
   tag: one(tags, {
     fields: [customerTags.tagId],
     references: [tags.id],
+  }),
+}));
+
+export const emailLogsRelations = relations(emailLogs, ({ one }) => ({
+  team: one(teams, {
+    fields: [emailLogs.teamId],
+    references: [teams.id],
+  }),
+  invoice: one(invoices, {
+    fields: [emailLogs.invoiceId],
+    references: [invoices.id],
   }),
 }));

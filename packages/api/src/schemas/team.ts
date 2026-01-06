@@ -24,7 +24,13 @@ export const createTeamSchema = z.object({
  * Team update schema
  */
 export const updateTeamSchema = createTeamSchema.partial().extend({
-  id: z.string().uuid(),
+  id: z.string().uuid().optional(),
+  // Branding fields
+  primary_color: z.string().regex(/^#[0-9A-F]{6}$/i).optional(),
+  secondary_color: z.string().regex(/^#[0-9A-F]{6}$/i).optional(),
+  accent_color: z.string().regex(/^#[0-9A-F]{6}$/i).optional(),
+  font_family: z.enum(['Inter', 'Times', 'Helvetica']).optional(),
+  invoice_footer: z.string().optional(),
 })
 
 /**
