@@ -617,3 +617,21 @@ export async function isInvoiceNumberUsed(
 
   return !!result;
 }
+
+export async function getInvoicesByStatus(
+  db: Database,
+  teamId: string,
+  status: typeof invoiceStatusEnum.enumValues[number],
+): Promise<any[]> {
+  return await db
+    .select()
+    .from(invoices)
+    .leftJoin(customers, eq(invoices.customerId, customers.id))
+    .where(
+      and(
+        eq(invoices.teamId, teamId),
+        eq(invoices.status, status),
+      ),
+    )
+    .orderBy(desc(invoices.createdAt));
+}
